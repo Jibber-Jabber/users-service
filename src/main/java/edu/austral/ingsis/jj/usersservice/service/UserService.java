@@ -4,6 +4,7 @@ import edu.austral.ingsis.jj.usersservice.dto.ProfileEditDto;
 import edu.austral.ingsis.jj.usersservice.dto.RegisterRequestDto;
 import edu.austral.ingsis.jj.usersservice.dto.UserDataDto;
 import edu.austral.ingsis.jj.usersservice.exceptions.BadRequestException;
+import edu.austral.ingsis.jj.usersservice.exceptions.NotFoundException;
 import edu.austral.ingsis.jj.usersservice.model.user.User;
 import edu.austral.ingsis.jj.usersservice.model.user.UserRole;
 import edu.austral.ingsis.jj.usersservice.model.user.UserRoleType;
@@ -84,5 +85,14 @@ public class UserService {
             userRepository.save(currentUser);
             return UserDataDto.from(currentUser);
         }else throw new BadRequestException("Invalid Password");
+    }
+
+    public UserDataDto getUserData() {
+        return UserDataDto.from(sessionUtils.getTokenUserInformation());
+    }
+
+    public UserDataDto getUserDataById(String userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found for given Id"));
+        return UserDataDto.from(user);
     }
 }
