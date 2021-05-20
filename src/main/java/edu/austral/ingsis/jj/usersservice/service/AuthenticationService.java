@@ -23,11 +23,11 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class AuthenticationService {
 
-    final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    final JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
-    final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public AuthenticationService(AuthenticationManager authenticationManager, JwtUtils jwtUtils, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
