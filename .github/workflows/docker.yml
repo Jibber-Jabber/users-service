@@ -39,4 +39,4 @@ jobs:
           context: .
           file: ./Dockerfile.multi
           push: true
-          tags: docker.pkg.github.com/${{ env.REPO }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.tag }}
+          tags: docker.pkg.github.com/${{ env.REPO }}/${{ env.IMAGE_NAME }}:latest
