@@ -1,10 +1,7 @@
 FROM gradle:6.8.3-jdk11 AS build
-
+COPY  . /home/gradle/src
 WORKDIR /home/gradle/src
-COPY build.gradle.kts settings.gradle.kts /home/gradle/src/
-RUN gradle clean build --no-daemon > /dev/null 2>&1 || true
-COPY ./ /home/gradle/src/
-RUN gradle build --no-daemon -x test
+RUN gradle assemble
 
 FROM openjdk:11-jre-slim
 EXPOSE 8080
