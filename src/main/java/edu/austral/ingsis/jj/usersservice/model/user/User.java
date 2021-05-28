@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = {"followed", "followers"})
 @Entity
 @Table(name = "user_data")
 @Data
@@ -32,6 +32,14 @@ public class User extends AbstractEntity {
 
     @NotNull
     private String lastName;
+
+    @NotNull
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> followed;
+
+    @NotNull
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<User> followers;
 
     @ManyToOne
     @JoinColumn(name = "user_role_id")

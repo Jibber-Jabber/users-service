@@ -49,10 +49,6 @@ public class AuthController {
         userService.registerUser(registerRequest);
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "asd";
-    }
 
 
 }

@@ -16,7 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -64,6 +66,8 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Error: Role not found."));
 
         user.setRole(role);
+        user.setFollowed(Collections.emptySet());
+        user.setFollowers(Collections.emptySet());
         userRepository.save(user);
     }
 
@@ -94,5 +98,33 @@ public class UserService {
     public UserDataDto getUserDataById(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found for given Id"));
         return UserDataDto.from(user);
+    }
+
+    public void followUser(String userId) {
+        User user = sessionUtils.getTokenUserInformation();
+        if (user.getId().equals(userId)) throw new BadRequestException("Can't follow yourself!");
+        User toFollow = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User to follow doesn't exist"));
+        user.getFollowed().add(toFollow);
+        toFollow.getFollowers().add(user);
+        userRepository.save(user);
+    }
+
+    public void unfollowUser(String userId) {
+        User user = sessionUtils.getTokenUserInformation();
+        if (user.getId().equals(userId)) throw new BadRequestException("Can't unfollow yourself!");
+        User toUnFollow = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User to follow doesn't exist"));
+        user.getFollowed().remove(toUnFollow);
+        toUnFollow.getFollowers().remove(user);
+        userRepository.save(user);
+    }
+
+    public List<UserDataDto> searchUserByUsername(String username){
+        User user = sessionUtils.getTokenUserInformation();
+        return userRepository.findByUsernameStartingWith(username).stream().filter(foundUser -> !foundUser.getUsername().equals(user.getUsername())).map(UserDataDto::from).collect(Collectors.toList());
+    }
+
+    public List<UserDataDto> getFollowedUsersInfo() {
+        User user = sessionUtils.getTokenUserInformation();
+        return user.getFollowed().stream().map(UserDataDto::from).collect(Collectors.toList());
     }
 }

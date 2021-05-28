@@ -26,7 +26,37 @@ public class UsersController {
     }
 
     @PutMapping("/editProfile")
-    public UserDataDto changeUserPassword(@Valid @RequestBody ProfileEditDto profileEditDto){
+    public UserDataDto editUserProfile(@Valid @RequestBody ProfileEditDto profileEditDto){
         return userService.editProfile(profileEditDto);
+    }
+
+    @PostMapping("/followUser")
+    public void followUserById(@RequestParam(value = "userId") String userId){
+        userService.followUser(userId);
+    }
+
+    @PostMapping("/unfollowUser")
+    public void unfollowUserById(@RequestParam(value = "userId") String userId){
+        userService.unfollowUser(userId);
+    }
+
+    @PostMapping("/searchUser")
+    public List<UserDataDto> searchUsersByUsername(@RequestParam(value = "username") String username){
+        return userService.searchUserByUsername(username);
+    }
+
+    @PostMapping("/userInfo")
+    public UserDataDto getUserInfoById(@RequestHeader("userId") String userId){
+        return userService.getUserDataById(userId);
+    }
+
+    @GetMapping("/followedUsers")
+    public List<UserDataDto> getFollowedUsersInfo(){
+        return userService.getFollowedUsersInfo();
+    }
+
+    @GetMapping("/authenticateUser")
+    public UserDataDto changeUserPassword(){
+        return userService.getUserData();
     }
 }
