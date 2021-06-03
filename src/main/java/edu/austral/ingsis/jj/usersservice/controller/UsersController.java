@@ -40,13 +40,13 @@ public class UsersController {
         userService.unfollowUser(userId);
     }
 
-    @PostMapping("/searchUser")
+    @GetMapping("/searchUser")
     public List<UserDataDto> searchUsersByUsername(@RequestParam(value = "username") String username){
         return userService.searchUserByUsername(username);
     }
 
-    @PostMapping("/userInfo")
-    public UserDataDto getUserInfoById(@RequestHeader("userId") String userId){
+    @GetMapping("/userInfo/{userId}")
+    public UserDataDto getUserInfoById(@PathVariable("userId") String userId){
         return userService.getUserDataById(userId);
     }
 

@@ -1,5 +1,6 @@
 package edu.austral.ingsis.jj.usersservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.austral.ingsis.jj.usersservice.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +17,7 @@ public class UserDataDto {
     private String email;
     private String firstName;
     private String lastName;
+    @JsonIgnore
     private String role;
 
     public static UserDataDto from(User user){
