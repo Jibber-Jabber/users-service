@@ -49,6 +49,11 @@ public class AuthController {
         userService.registerUser(registerRequest);
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        authenticationService.logout(response);
+    }
+
 
 
 }

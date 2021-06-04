@@ -56,6 +56,10 @@ public class AuthenticationService {
                 .build();
     }
 
+    public void logout(HttpServletResponse response){
+        response.setHeader("Set-Cookie", "jwt=" + "" + "; HttpOnly; SameSite=strict; Path=/api; expires=Thu, 01 Jan 1970 00:00:00 GMT");
+    }
+
     @PostConstruct
     public void addRoles(){
         if (!roleRepository.existsByUserRoleType(UserRoleType.ROLE_USER)) {
