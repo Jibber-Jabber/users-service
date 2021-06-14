@@ -1,4 +1,4 @@
-name: CI
+name: Build and push Production Docker Image
 
 # Controls when the action will run.
 on:
