@@ -41,7 +41,7 @@ public class AuthenticationService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        response.setHeader("Set-Cookie", "jwt=" + jwt + "; HttpOnly; SameSite=strict; Path=/api");
+        response.setHeader("Set-Cookie", "jwt=" + jwt + "; HttpOnly; Secure=true; SameSite=strict; Path=/api");
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String role = userDetails.getAuthorities().stream().findFirst().map((GrantedAuthority::getAuthority)).orElseThrow(() -> new NotFoundException("Role Not found"));
@@ -57,7 +57,7 @@ public class AuthenticationService {
     }
 
     public void logout(HttpServletResponse response){
-        response.setHeader("Set-Cookie", "jwt=" + "" + "; HttpOnly; SameSite=strict; Path=/api; expires=Thu, 01 Jan 1970 00:00:00 GMT");
+        response.setHeader("Set-Cookie", "jwt=" + "" + "; HttpOnly; Secure=true; SameSite=strict; Path=/api; expires=Thu, 01 Jan 1970 00:00:00 GMT");
     }
 
     @PostConstruct
