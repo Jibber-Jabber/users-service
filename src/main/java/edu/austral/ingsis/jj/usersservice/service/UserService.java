@@ -46,7 +46,7 @@ public class UserService {
         return Arrays.asList("pepito", "juancito");
     }
 
-    public void registerUser(RegisterRequestDto registerRequest){
+    public User registerUser(RegisterRequestDto registerRequest){
 
         if (userRepository.existsByUsername(registerRequest.getUsername()))
             throw new BadRequestException("Username already in use");
@@ -68,7 +68,7 @@ public class UserService {
         user.setRole(role);
         user.setFollowed(Collections.emptySet());
         user.setFollowers(Collections.emptySet());
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public UserDataDto editProfile(ProfileEditDto profileEditDto) {
@@ -116,6 +116,7 @@ public class UserService {
         user.getFollowed().remove(toUnFollow);
         toUnFollow.getFollowers().remove(user);
         userRepository.save(user);
+        userRepository.save(toUnFollow);
     }
 
     public List<UserDataDto> searchUserByUsername(String username){

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true, exclude = {"followed", "followers"})
@@ -33,16 +34,24 @@ public class User extends AbstractEntity {
     @NotNull
     private String lastName;
 
-    @NotNull
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> followed;
 
-    @NotNull
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<User> followers;
 
     @ManyToOne
     @JoinColumn(name = "user_role_id")
     private UserRole role;
 
+    public User(@NotNull String username, @NotNull @Email String email, @NotNull String password, @NotNull String firstName, @NotNull String lastName, UserRole role) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        followers = new HashSet<>();
+        followed = new HashSet<>();
+    }
 }

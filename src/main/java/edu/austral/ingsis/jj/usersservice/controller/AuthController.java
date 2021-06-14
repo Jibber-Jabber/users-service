@@ -1,14 +1,10 @@
 package edu.austral.ingsis.jj.usersservice.controller;
 
-import edu.austral.ingsis.jj.usersservice.config.JwtUtils;
 import edu.austral.ingsis.jj.usersservice.dto.LoginResponseDto;
 import edu.austral.ingsis.jj.usersservice.dto.LoginDto;
 import edu.austral.ingsis.jj.usersservice.dto.RegisterRequestDto;
-import edu.austral.ingsis.jj.usersservice.repository.RoleRepository;
-import edu.austral.ingsis.jj.usersservice.repository.UserRepository;
 import edu.austral.ingsis.jj.usersservice.service.AuthenticationService;
 import edu.austral.ingsis.jj.usersservice.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,23 +14,11 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
 
-    final UserRepository userRepository;
-
-    final RoleRepository roleRepository;
-
-    final PasswordEncoder encoder;
-
-    final JwtUtils jwtUtils;
-
     final AuthenticationService authenticationService;
 
     final UserService userService;
 
-    public AuthController(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils, AuthenticationService authenticationService, UserService userService) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-        this.jwtUtils = jwtUtils;
+    public AuthController(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
     }

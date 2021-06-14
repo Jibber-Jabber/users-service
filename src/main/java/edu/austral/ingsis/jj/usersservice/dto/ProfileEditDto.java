@@ -16,9 +16,7 @@ public class ProfileEditDto {
 
     @NotNull
     private String password;
-
     private String newPassword;
-
     @Email
     private String email;
     private String firstName;

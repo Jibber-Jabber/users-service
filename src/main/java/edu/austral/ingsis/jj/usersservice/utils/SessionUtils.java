@@ -1,7 +1,6 @@
 package edu.austral.ingsis.jj.usersservice.utils;
 
 import edu.austral.ingsis.jj.usersservice.config.UserDetailsImpl;
-import edu.austral.ingsis.jj.usersservice.config.UserDetailsServiceImpl;
 import edu.austral.ingsis.jj.usersservice.exceptions.NotFoundException;
 import edu.austral.ingsis.jj.usersservice.exceptions.UnauthorizedException;
 import edu.austral.ingsis.jj.usersservice.model.user.User;

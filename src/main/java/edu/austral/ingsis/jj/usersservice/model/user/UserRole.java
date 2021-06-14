@@ -1,6 +1,7 @@
 package edu.austral.ingsis.jj.usersservice.model.user;
 
 import edu.austral.ingsis.jj.usersservice.model.AbstractEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Table(name = "user_role")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserRole extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
