@@ -37,3 +37,28 @@ jobs:
           file: ./Dockerfile.multi
           push: true
           tags: docker.pkg.github.com/${{ env.REPO }}/${{ env.IMAGE_NAME }}:latest
+
+  azure-deploy:
+    needs: build_and_push_to_registry
+    name: Deploy to Azure VM
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connecting with SSH to Azure VM
+        uses: appleboy/ssh-action@master
+        env:
+          REPO_OWNER: ${{ secrets.REPOSITORY_OWNER }}
+          GITHUB_TOKEN: ${{ secrets.VM_GITHUB_TOKEN }}
+        with:
+          username: ${{ secrets.VM_USERNAME }}
+          host: ${{ secrets.VM_PUBLIC_IP_PROD }}
+          key: ${{ secrets.VM_SSH_PRIVATE_KEY_PROD }}
+          envs: REPO_OWNER, GITHUB_TOKEN
+          script: |
+            cd infrastructure
+            sudo aa-remove-unknown
+            sudo docker container kill $(sudo docker ps -q)
+            sudo docker rm $(sudo docker ps -a -q)
+            sudo docker rmi $(sudo docker images -q)
+            sudo docker login docker.pkg.github.com --username $REPO_OWNER --password $GITHUB_TOKEN
+            sudo printf 'POSTGRES_PASSWORD=${{ secrets.VM_POSTGRES_PASSWORD }} \nJJ_SECRET=${{ secrets.VM_JJ_SECRET }} \nJJ_EXPIRATION=${{ secrets.VM_JJ_EXPIRATION }}' > env_file
+            sudo docker-compose -f docker-compose.yml --env-file env_file up -d --force-recreate --build
